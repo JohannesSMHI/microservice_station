@@ -1,5 +1,5 @@
 
-SHARK visID - microservice
+SHARK station - microservice
 ==============================
 
 🧰 About - Usage
@@ -8,7 +8,7 @@ SHARK visID - microservice
 Developed by Shd at SMHI.
 
 - Python based service using Flask
-- Get ID for visit based on timestamp and position
+- Handles the versioned station.txt list at the Swedish NODC
 - `Microservice Template <https://github.com/shark-microservices/microservice_template>`_
 
 

@@ -12,12 +12,12 @@ import connexion
 from handler import Station, get_list_file
 
 """
-Microservice Template: 
+Microservice Template:
     - https://github.com/shark-microservices/microservice_station
 
 This service is intended for SMHI-NODC use.
     - It handles the station list file (station.txt) and versioning (SVN)
-
+    - Examples: See ./example/
 """
 
 
@@ -63,12 +63,12 @@ app.add_api('openapi.yaml')
 cache = Cache(config={
     "DEBUG": True,
     "CACHE_TYPE": "SimpleCache",
-    "CACHE_DEFAULT_TIMEOUT": 100*24*60*60  # days*hours*minutes*seconds
+    "CACHE_DEFAULT_TIMEOUT": 100 * 24 * 60 * 60  # days*hours*minutes*seconds
 })
 cache.init_app(app.app)
 
 
-@cache.cached(timeout=100*24*60*60, key_prefix='all_comments')
+@cache.cached(timeout=100 * 24 * 60 * 60, key_prefix='all_comments')
 def get_station_object():
     """Return a station object."""
     return Station()
