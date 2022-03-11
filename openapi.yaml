@@ -1,0 +1,83 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: SHARK station.txt service
+  description: Get content from the master list (station.txt)
+tags:
+- name: station
+paths:
+  /getfile:
+    get:
+      operationId: app.get_file
+      tags:
+      - station_file
+      description: Return file content
+      responses:
+        200:
+          description: Successful operation
+          content:
+            text/css:
+              schema:
+                type: string
+        404:
+          description: Not found
+  /getdata:
+    get:
+      operationId: app.get_data
+      tags:
+      - get_station_data
+      description: Return a json with station information
+      parameters:
+        - $ref: '#/components/parameters/attribute'
+        - $ref: '#/components/parameters/attribute_list'
+        - $ref: '#/components/parameters/all_attributes'
+        - $ref: '#/components/parameters/local_id'
+        - $ref: '#/components/parameters/station_localid'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StationData'
+        404:
+          description: Something went down hill
+components:
+  schemas:
+    FileContent:
+      type: string
+    StationData:
+      type: object
+  parameters:
+    local_id:
+      in: query
+      name: local_id
+      schema:
+        type: string
+        example: 135016
+    station_localid:
+      in: query
+      name: station_localid
+      schema:
+        type: string
+        example: 263603
+    all_attributes:
+      in: query
+      name: all_attributes
+      schema:
+        type: boolean
+        example: false
+    attribute:
+      in: query
+      name: attribute
+      schema:
+        type: string
+        example: STATION_NAME
+    attribute_list:
+      in: query
+      name: attribute_list
+      schema:
+        type: string
+        example: REG_ID,REG_ID_GROUP,STATION_NAME,SYNONYM_NAMES,ICES_STATION_NAME,LAT_DM,LONG_DM,LATITUDE_WGS84_SWEREF99_DD,LONGITUDE_WGS84_SWEREF99_DD,LATITUDE_SWEREF99TM,LONGITUDE_SWEREF99TM,OUT_OF_BOUNDS_RADIUS,WADEP,EU_CD,MEDIA,COMNT,OLD_SHARK_ID
