@@ -11,12 +11,9 @@ import requests
 
 if __name__ == '__main__':
     url = "http://10.64.10.247:5000/getdata"
-
     response = requests.request(
         "GET", url, params={'all_attributes': True}
     )
-
     data = response.json()
-
     print('columns', data.keys())
     print('sample', data['STATION_NAME'][:5])

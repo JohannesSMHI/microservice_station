@@ -71,6 +71,7 @@ cache.init_app(app.app)
 @cache.cached(timeout=100 * 24 * 60 * 60, key_prefix='all_comments')
 def get_station_object():
     """Return a station object."""
+    # TODO Needs to be cleared once the station list is updated.
     return Station()
 
 
