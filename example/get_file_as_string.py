@@ -9,11 +9,12 @@ Created on 2022-03-11 14:51
 import requests
 import pandas as pd
 from io import StringIO
-
+import time
 
 if __name__ == '__main__':
     url = "http://10.64.10.247:5000/getfile"
 
+    start_time = time.time()
     response = requests.request("GET", url)
 
     # Store string data in a pandas Dataframe.
@@ -25,3 +26,4 @@ if __name__ == '__main__':
         dtype=str,
         keep_default_na=False,
     )
+    print("Timeit:--%.5f sec" % (time.time() - start_time))

@@ -8,7 +8,6 @@ Created on 2022-03-11 14:50
 """
 import requests
 
-
 if __name__ == '__main__':
     url = "http://10.64.10.247:5000/getdata"
 

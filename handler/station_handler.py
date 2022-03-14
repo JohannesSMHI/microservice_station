@@ -15,7 +15,7 @@ LIST_PATH = Path(__file__).parent.joinpath('resources/station.txt')
 
 def get_list_file():
     """Return file content."""
-    with open(LIST_PATH) as f:
+    with open(LIST_PATH, encoding='cp1252') as f:
         return f.read()
 
 
