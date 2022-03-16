@@ -12,7 +12,7 @@ import pandas as pd
 import time
 
 if __name__ == '__main__':
-    # url = r'http://10.64.10.247:5000/getfile'
+    url = r'http://10.64.10.247:5000/getfile'
     start_time = time.time()
     response = requests.request("GET", url)
     print("Timeit:--%.5f sec" % (time.time() - start_time))
