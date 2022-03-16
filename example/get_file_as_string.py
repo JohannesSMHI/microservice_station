@@ -7,16 +7,16 @@ Created on 2022-03-11 14:51
 @author: johannes
 """
 import requests
-import pandas as pd
 from io import StringIO
+import pandas as pd
 import time
 
 if __name__ == '__main__':
-    url = "http://10.64.10.247:5000/getfile"
-
+    url = r'http://10.64.10.247:5000/getfile'
     start_time = time.time()
     response = requests.request("GET", url)
-
+    print("Timeit:--%.5f sec" % (time.time() - start_time))
+    start_time = time.time()
     # Store string data in a pandas Dataframe.
     df = pd.read_csv(
         StringIO(response.text),
