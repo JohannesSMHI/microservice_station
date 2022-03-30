@@ -48,8 +48,71 @@ components:
   schemas:
     FileContent:
       type: string
+      example: REG_ID\tREG_ID_GROUP\tSTATION_NAME....
     StationData:
       type: object
+      properties:
+        REG_ID:
+          type: integer
+          example: 135016
+          format: int64
+        REG_ID_GROUP:
+          type: integer
+          example: 263603
+          format: int64
+        STATION_NAME:
+          type: string
+          example: N7 OST NIDINGEN
+        SYNONYM_NAMES:
+          type: string
+          example: FLADEN1<or>FLADEN1(3)<or>KA 5
+        ICES_STATION_NAME:
+          type: string
+          example: Nidingen
+        LAT_DM:
+          type: number
+          example: 5718.20
+          format: float
+        LONG_DM:
+          type: number
+          example: 1159.30
+          format: float
+        LATITUDE_WGS84_SWEREF99_DD:
+          type: number
+          example: 57.3033
+          format: float
+        LONGITUDE_WGS84_SWEREF99_DD:
+          type: number
+          example: 11.9883
+          format: float
+        LATITUDE_SWEREF99TM:
+          type: integer
+          example: 6355167
+          format: int64
+        LONGITUDE_SWEREF99TM:
+          type: integer
+          example: 318574
+          format: int64
+        OUT_OF_BOUNDS_RADIUS:
+          type: integer
+          example: 1200
+          format: int64
+        WADEP:
+          type: integer
+          example: 26
+          format: int64
+        EU_CD:
+          type: string
+          example: SE635952-127000
+        MEDIA:
+          type: string
+          example: Biota;Vatten
+        COMNT:
+          type: string
+          example: VAL-2018-05-14
+        OLD_SHARK_ID:
+          type: string
+          example: KANI52
   parameters:
     local_id:
       in: query
