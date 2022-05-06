@@ -53,13 +53,11 @@ components:
       type: object
       properties:
         REG_ID:
-          type: integer
+          type: string
           example: 135016
-          format: int64
         REG_ID_GROUP:
-          type: integer
+          type: string
           example: 263603
-          format: int64
         STATION_NAME:
           type: string
           example: N7 OST NIDINGEN
@@ -70,37 +68,29 @@ components:
           type: string
           example: Nidingen
         LAT_DM:
-          type: number
+          type: string
           example: 5718.20
-          format: float
         LONG_DM:
-          type: number
+          type: string
           example: 1159.30
-          format: float
         LATITUDE_WGS84_SWEREF99_DD:
-          type: number
+          type: string
           example: 57.3033
-          format: float
         LONGITUDE_WGS84_SWEREF99_DD:
-          type: number
+          type: string
           example: 11.9883
-          format: float
         LATITUDE_SWEREF99TM:
-          type: integer
+          type: string
           example: 6355167
-          format: int64
         LONGITUDE_SWEREF99TM:
-          type: integer
+          type: string
           example: 318574
-          format: int64
         OUT_OF_BOUNDS_RADIUS:
-          type: integer
+          type: string
           example: 1200
-          format: int64
         WADEP:
-          type: integer
+          type: string
           example: 26
-          format: int64
         EU_CD:
           type: string
           example: SE635952-127000
