@@ -18,6 +18,11 @@ def get_list_file():
         return f.read().encode('cp1252')
 
 
+def get_list_file_path():
+    """Return file path."""
+    return LIST_PATH
+
+
 class Station:
     """Handler for the station list at the datahost at SMHI."""
 
@@ -57,17 +62,17 @@ class Station:
         else:
             return 'No parameters given', 404
 
-    def get_data_for_id(self, local_id=None, station_localid=None):
+    def get_data_for_id(self, local_id=None, station_local_id=None):
         """Return dictionary for id.
 
         Args:
             local_id (str): ID of the local (Provplats).
-            station_localid (str): ID of the station (Övervakningsstation).
+            station_local_id (str): ID of the station (Övervakningsstation).
         """
         if local_id:
             boolean = self.df['REG_ID'] == local_id
-        elif station_localid:
-            boolean = self.df['REG_ID_GROUP'] == station_localid
+        elif station_local_id:
+            boolean = self.df['REG_ID_GROUP'] == station_local_id
         else:
             return None
         return self.df.loc[boolean, :].squeeze().to_dict()

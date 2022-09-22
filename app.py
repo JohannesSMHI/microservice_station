@@ -6,77 +6,110 @@ Created on 2022-03-11 08:47
 
 @author: johannes
 """
-import flask
-from flask_caching import Cache
-import connexion
-from handler import Station, get_list_file
+import uvicorn
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
+# from routes.api import router as api_router
+from fastapi import APIRouter
+from starlette.responses import StreamingResponse
 
-"""
-Microservice Template:
-    - https://github.com/shark-microservices/microservice_station
-
-This service is intended for SMHI-NODC use.
-    - It handles the station list file (station.txt) and versioning (SVN)
-    - Examples: See ./example/
-"""
+from handler import Station, get_list_file, get_list_file_path
+from pydantic import BaseModel, Field
+from typing import Union
 
 
-def get_file(*args, **kwargs):
-    """Get station file."""
-    content = get_list_file()
-    response = flask.Response(content)
-    response.headers['Content-Type'] = 'text/csv'
-    return response
+api_router = APIRouter(
+    # prefix="/",
+    tags=["Station list"],
+    responses={404: {"description": "Not found"}},
+)
+
+app = FastAPI()
+
+origins = ["http://localhost:8010"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_methods=["GET"],
+    allow_headers=["*"],
+)
 
 
-def get_data(*args, attribute=None, attribute_list=None, all_attributes=False,
-             local_id=None, station_localid=None, **kwargs):
-    """Get data from master station list.
+class StationModel(BaseModel):
+    attribute: Union[str, None] = Field(
+        default=None,
+        title='Station attribute',
+        description='Return list for the given attribute'
+    )
+    attribute_list: Union[str, None] = Field(
+        default=None,
+        title='Return attribute values',
+        description='Return dictionary based on a list of attributes'
+    )
+    all_attributes: bool = Field(
+        default=False,
+        title='Return all attributes',
+        description='description Station list attribute'
+    )
+    local_id: Union[str, None] = Field(
+        default=None,
+        title='Return station attributes',
+        description='Return all attribute values for one '
+                    'station based on local-id'
+    )
+    station_local_id: Union[str, None] = Field(
+        default=None,
+        title='Return station attributes',
+        description='Return all attribute values for one '
+                    'station based on station-local-id'
+    )
 
-    Args:
-        attribute (str): Attribute
-        attribute_list (str): List of attributes
-        all_attributes (bool): The complete list? (True | False)
-        local_id (str): ID of the local (Provplats)
-        station_localid (str): ID of the station (Övervakningsstation)
-    """
-    if attribute:
-        return station_handler.get_attribute_list(attribute=attribute)
-    elif attribute_list:
-        return station_handler.get_dictionary(attribute_list=attribute_list)
-    elif all_attributes:
-        return station_handler.get_dictionary(all_attributes=all_attributes)
-    elif local_id:
-        return station_handler.get_data_for_id(local_id=local_id)
-    elif station_localid:
-        return station_handler.get_data_for_id(station_localid=station_localid)
+
+@app.get('/getdata/')
+async def get_data(content: StationModel):
+    """Get data from master station list."""
+    if content.attribute:
+        return station_handler.get_attribute_list(
+            attribute=content.attribute)
+    elif content.attribute_list:
+        return station_handler.get_dictionary(
+            attribute_list=content.attribute_list)
+    elif content.all_attributes:
+        return station_handler.get_dictionary(
+            all_attributes=content.all_attributes)
+    elif content.local_id:
+        return station_handler.get_data_for_id(
+            local_id=content.local_id)
+    elif content.station_local_id:
+        return station_handler.get_data_for_id(
+            station_local_id=content.station_local_id)
     else:
         return 'No parameters given', 404
 
 
-app = connexion.FlaskApp(
-    __name__,
-    specification_dir='./',
-    options={'swagger_url': '/'},
-)
-app.add_api('openapi.yaml')
-cache = Cache(config={
-    "DEBUG": True,
-    "CACHE_TYPE": "SimpleCache",
-    "CACHE_DEFAULT_TIMEOUT": 100 * 24 * 60 * 60  # days*hours*minutes*seconds
-})
-cache.init_app(app.app)
+@app.get('/getfile/')
+async def get_file() -> StreamingResponse:
+    """Get station file."""
+    def iterate_file():
+        with open(get_list_file_path(), encoding='cp1252') as file_like:
+            yield from file_like
+            # return file_like.read().encode('cp1252')
+    return StreamingResponse(iterate_file(), media_type='text')
 
 
-@cache.cached(timeout=100 * 24 * 60 * 60, key_prefix='all_comments')
-def get_station_object():
-    """Return a station object."""
-    # TODO Needs to be cleared once the station list is updated.
-    return Station()
+station_handler = Station()
 
 
-station_handler = get_station_object()
+app.include_router(api_router)
 
+if __name__ == '__main__':
+    uvicorn.run(
+        "app:app",
+        host='127.0.0.1',
+        port=8010,
+        log_level="info",
+        reload=True
+    )
 
-if __name__ == "__main__":
-    app.run(port=5000)
