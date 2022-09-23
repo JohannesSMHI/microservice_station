@@ -22,6 +22,4 @@ jobs:
           pip install -e .
       - name: Run linting
         run: |
-          flake8 --ignore D101
-          flake8 --ignore D102
-          flake8 --ignore D400
+          flake8 --ignore D101,D102,D400
