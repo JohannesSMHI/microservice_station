@@ -7,7 +7,7 @@ SHARK station - microservice
 
 Developed by Shd at SMHI.
 
-- Python based service using Flask
+- Python based service using FastAPI
 - Handles the versioned station.txt list at the Swedish NODC
 - `Microservice Template <https://github.com/shark-microservices/microservice_template>`_
 
