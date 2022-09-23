@@ -6,5 +6,3 @@ Created on 2022-09-23 10:28
 
 @author: johannes
 """
-# from .file import router  # noqa: F401
-# from .station import attr_router  # noqa: F401
