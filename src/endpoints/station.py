@@ -16,13 +16,13 @@ from src.models import (
 )
 
 
-router = APIRouter(
+attr_router = APIRouter(
     tags=['Station attributes'],
     responses={404: {'description': 'Not found'}},
 )
 
 
-@router.post('/attribute/')
+@attr_router.post('/attribute/')
 async def get_attribute(content: AttributeModel):
     """Return list for the given attribute."""
     if not content.attribute:
@@ -33,7 +33,7 @@ async def get_attribute(content: AttributeModel):
     return content.attribute
 
 
-@router.post('/attribute-list/')
+@attr_router.post('/attribute-list/')
 async def get_attribute_list(content: AttributeListModel):
     """Return list for the given attribute list.
 
@@ -48,7 +48,7 @@ async def get_attribute_list(content: AttributeListModel):
     return content.attribute_list
 
 
-@router.post('/attribute-all/')
+@attr_router.post('/attribute-all/')
 async def get_all_attributes(content: AttributeAllModel):
     """Return a complete dictionary representation of the station list."""
     if not content.all_attributes:
@@ -60,8 +60,8 @@ async def get_all_attributes(content: AttributeAllModel):
     return content.all_attributes
 
 
-@router.post('/local-id/')
-async def get_data(content: LocalIdModel):
+@attr_router.post('/local-id/')
+async def get_attributes_for_local_id(content: LocalIdModel):
     """Return all attributes for the given local-id."""
     if not content.local_id:
         raise HTTPException(
@@ -72,8 +72,8 @@ async def get_data(content: LocalIdModel):
     return content.local_id
 
 
-@router.post('/station-id/')
-async def get_data(content: StationIdModel):
+@attr_router.post('/station-id/')
+async def get_attributes_for_station_id(content: StationIdModel):
     """Return all attributes for the given station-id."""
     if not content.station_id:
         raise HTTPException(

@@ -12,4 +12,4 @@ from src.endpoints import file, station
 
 router = APIRouter()
 router.include_router(file.router)
-router.include_router(station.router)
+router.include_router(station.attr_router)

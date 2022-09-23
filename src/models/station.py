@@ -15,7 +15,7 @@ station_handler = Station()
 
 class AttributeModel(BaseModel):
     attribute: Union[str, dict, None] = Field(
-        default=None,
+        default='STATION_NAME',
         title='Station attribute',
         description='Return list for the given attribute'
     )
@@ -33,7 +33,7 @@ class AttributeModel(BaseModel):
 
 class AttributeListModel(BaseModel):
     attribute_list: Union[str, dict, None] = Field(
-        default=None,
+        default='REG_ID,STATION_NAME,MEDIA',
         title='Return attribute values',
         description='Return dictionary based on a list of attributes'
     )
@@ -48,7 +48,7 @@ class AttributeListModel(BaseModel):
 
 class AttributeAllModel(BaseModel):
     all_attributes: Union[bool, dict] = Field(
-        default=False,
+        default=True,
         title='',
         description='Return a complete dictionary representation '
                     'of the station list'
@@ -64,7 +64,7 @@ class AttributeAllModel(BaseModel):
 
 class LocalIdModel(BaseModel):
     local_id: Union[str, dict, None] = Field(
-        default=None,
+        default='135404',
         title='Return station attributes',
         description='Return all attribute values for one '
                     'station based on local-id'
@@ -73,14 +73,14 @@ class LocalIdModel(BaseModel):
     @validator('local_id', pre=True)
     def parse_local_id(cls, value):
         if value:
-            return station_handler.get_data_for_id(local_id=value)
+            return station_handler.get_data_for_id(local_id=str(value))
         else:
             return None
 
 
 class StationIdModel(BaseModel):
     station_id: Union[str, dict, None] = Field(
-        default=None,
+        default='263732',
         title='Return station attributes',
         description='Return all attribute values for one '
                     'station based on station-local-id'
@@ -89,6 +89,6 @@ class StationIdModel(BaseModel):
     @validator('station_id', pre=True)
     def parse_station_local_id(cls, value):
         if value:
-            return station_handler.get_data_for_id(station_local_id=value)
+            return station_handler.get_data_for_id(station_local_id=str(value))
         else:
             return None
