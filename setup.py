@@ -21,10 +21,10 @@ NAME = 'microservice_station'
 
 setuptools.setup(
     name=NAME,
-    version="0.1.0",
+    version="0.2.0",
     author="SMHI - NODC",
     author_email="shark@smhi.se",
-    description="Handle station and SVN repo.",
+    description="Handles station list.",
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/shark-microservices/microservice_station",

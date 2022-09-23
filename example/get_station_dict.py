@@ -8,11 +8,14 @@ Created on 2022-03-11 14:50
 """
 import requests
 
+
 if __name__ == '__main__':
-    url = "http://10.64.10.247:5000/getdata"
+    url = "http://127.0.0.1:8010/attribute"
 
     response = requests.request(
-        "GET", url, params={'local_id': 135404}
+        "POST", url,
+        headers={"Content-type": "application/json"},
+        json={"attribute": "STATION_NAME"}
     )
     data = response.json()
     print(data)

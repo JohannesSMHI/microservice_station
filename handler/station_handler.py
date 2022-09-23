@@ -36,15 +36,19 @@ class Station:
             dtype=str,
             keep_default_na=False,
         )
+        self.valid_attributes = set(self.df.columns)
+
+    def get_list(self, attribute):
+        return self.df[attribute].to_list()
 
     def get_attribute_list(self, attribute=None):
         """Return list.
 
         Get all values from a specific attribute (eg. STATION_NAME).
         """
-        return {attribute: self.df[attribute].to_list()}
+        return {attribute: self.get_list(attribute)}
 
-    def get_dictionary(self, all_attributes=None, attribute_list=None):
+    def get_dictionary(self, all_attributes=False, attribute_list=None):
         """Return list.
 
         Get all values for a list of attributes.
@@ -57,10 +61,10 @@ class Station:
         if all_attributes:
             return self.df.to_dict(orient='list')
         elif attribute_list:
-            lista = list(map(str.strip, attribute_list.split(',')))
-            return self.df[lista].to_dict(orient='list')
+            columns = list(map(str.strip, attribute_list.split(',')))
+            return self.df[columns].to_dict(orient='list')
         else:
-            return 'No parameters given', 404
+            return None
 
     def get_data_for_id(self, local_id=None, station_local_id=None):
         """Return dictionary for id.
@@ -75,8 +79,8 @@ class Station:
             boolean = self.df['REG_ID_GROUP'] == station_local_id
         else:
             return None
-        return self.df.loc[boolean, :].squeeze().to_dict()
 
-
-if __name__ == "__main__":
-    statn = Station()
+        if boolean.any():
+            return self.df.loc[boolean, :].squeeze().to_dict()
+        else:
+            return None
