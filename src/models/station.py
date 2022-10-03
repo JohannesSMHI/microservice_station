@@ -21,7 +21,7 @@ class AttributeModel(BaseModel):
     )
 
     @validator('attribute', pre=True)
-    def parse_attribute(cls, value):
+    def validate_attribute(cls, value):
         if value:
             if value in station_handler.valid_attributes:
                 return station_handler.get_attribute_list(attribute=value)
@@ -39,7 +39,7 @@ class AttributeListModel(BaseModel):
     )
 
     @validator('attribute_list', pre=True)
-    def parse_attribute_list(cls, value):
+    def validate_attribute_list(cls, value):
         if value:
             return station_handler.get_dictionary(attribute_list=value)
         else:
@@ -55,7 +55,7 @@ class AttributeAllModel(BaseModel):
     )
 
     @validator('all_attributes', pre=True)
-    def parse_all_attributes(cls, value):
+    def validate_all_attributes(cls, value):
         if value:
             return station_handler.get_dictionary(all_attributes=value)
         else:
@@ -71,7 +71,7 @@ class LocalIdModel(BaseModel):
     )
 
     @validator('local_id', pre=True)
-    def parse_local_id(cls, value):
+    def validate_local_id(cls, value):
         if value:
             return station_handler.get_data_for_id(local_id=str(value))
         else:
@@ -87,7 +87,7 @@ class StationIdModel(BaseModel):
     )
 
     @validator('station_id', pre=True)
-    def parse_station_local_id(cls, value):
+    def validate_station_local_id(cls, value):
         if value:
             return station_handler.get_data_for_id(station_local_id=str(value))
         else:
