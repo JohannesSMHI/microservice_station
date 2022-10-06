@@ -6,10 +6,10 @@ Created on 2022-03-11 10:57
 
 @author: johannes
 """
-from pathlib import Path
 import pandas as pd
+from utils import timed_lru_cache, get_list_path
 
-LIST_PATH = Path(__file__).parent.joinpath('resources/station.txt')
+LIST_PATH = get_list_path()
 
 
 def get_list_file():
@@ -28,7 +28,13 @@ class Station:
 
     def __init__(self):
         """Initialize."""
-        self.df = pd.read_csv(
+        self.valid_attributes = set(self.df.columns)
+
+    @property
+    @timed_lru_cache(seconds=3600)
+    def df(self):
+        """Cached dataframe with "time to live" set to 1 hour."""
+        return pd.read_csv(
             LIST_PATH,
             sep='\t',
             header=0,
@@ -36,7 +42,6 @@ class Station:
             dtype=str,
             keep_default_na=False,
         )
-        self.valid_attributes = set(self.df.columns)
 
     def get_list(self, attribute):
         return self.df[attribute].to_list()
@@ -46,7 +51,10 @@ class Station:
 
         Get all values from a specific attribute (eg. STATION_NAME).
         """
-        return {attribute: self.get_list(attribute)}
+        if attribute in self.valid_attributes:
+            return {attribute: self.get_list(attribute)}
+        else:
+            return None
 
     def get_dictionary(self, all_attributes=False, attribute_list=None):
         """Return list.

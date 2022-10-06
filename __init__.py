@@ -9,3 +9,4 @@ Created on 2022-09-23 11:14
 from handler import *  # noqa: F401, F403
 from routes import *  # noqa: F401, F403
 from src import *  # noqa: F401, F403
+import utils  # noqa: F401, F403

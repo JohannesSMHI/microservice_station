@@ -6,7 +6,7 @@ Created on 2022-09-23 11:00
 
 @author: johannes
 """
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from src.models import (
     AttributeModel,
     AttributeListModel,
@@ -22,63 +22,34 @@ router = APIRouter(
 )
 
 
-@router.post('/attribute/')
-async def get_attribute(content: AttributeModel):
+@router.get('/attribute', response_model=AttributeModel)
+async def get_attribute(attribute: str):
     """Return list for the given attribute."""
-    if not content.attribute:
-        raise HTTPException(
-            status_code=404,
-            detail='Could not find your attribute'
-        )
-    return content.attribute
+    return {'attribute': attribute}
 
 
-@router.post('/attribute-list/')
-async def get_attribute_list(content: AttributeListModel):
+@router.get('/attribute-list', response_model=AttributeListModel)
+async def get_attribute_list(attribute_list: str):
     """Return list for the given attribute list.
 
     The attribute list should be in a string format, eg. 'REG_ID,STATION_NAME'.
     """
-    if not content.attribute_list:
-        raise HTTPException(
-            status_code=404,
-            detail=('Could not find one or more of your attributes.',
-                    'Make sure all of the given attributes are valid.')
-        )
-    return content.attribute_list
+    return {'attribute_list': attribute_list}
 
 
-@router.post('/attribute-all/')
-async def get_all_attributes(content: AttributeAllModel):
+@router.get('/attribute-all', response_model=AttributeAllModel)
+async def get_all_attributes(all_attributes: bool):
     """Return a complete dictionary representation of the station list."""
-    if not content.all_attributes:
-        raise HTTPException(
-            status_code=404,
-            detail=('Could not deliver any data.',
-                    'Did you pass the bool argument as false?')
-        )
-    return content.all_attributes
+    return {'all_attributes': all_attributes}
 
 
-@router.post('/local-id/')
-async def get_attributes_for_local_id(content: LocalIdModel):
+@router.get('/local-id', response_model=LocalIdModel)
+async def get_attributes_for_local_id(local_id: str):
     """Return all attributes for the given local-id."""
-    if not content.local_id:
-        raise HTTPException(
-            status_code=404,
-            detail=('Could not find your data for your id.',
-                    'Perhaps you used a station id and not a local id?')
-        )
-    return content.local_id
+    return {'local_id': local_id}
 
 
-@router.post('/station-id/')
-async def get_attributes_for_station_id(content: StationIdModel):
+@router.get('/station-id', response_model=StationIdModel)
+async def get_attributes_for_station_id(station_id: str):
     """Return all attributes for the given station-id."""
-    if not content.station_id:
-        raise HTTPException(
-            status_code=404,
-            detail=('Could not find your data for your id.',
-                    'Perhaps you used a local id and not a station id?')
-        )
-    return content.station_id
+    return {'station_id': station_id}

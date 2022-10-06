@@ -13,3 +13,6 @@ from .station import (  # noqa: F401
     LocalIdModel,
     StationIdModel
 )
+from .exceptions import (  # noqa: F401
+    ModelDoesNotExists
+)
