@@ -9,13 +9,17 @@ Created on 2022-10-06 15:10
 
 
 class ModelDoesNotExists(Exception):
+    """Exception for models."""
+
     def __init__(self, model_name, detail="Error message!"):
+        """Initialize."""
         self.model_name = model_name
         self.detail = ' '.join(detail) \
             if not isinstance(detail, str) else detail
         super().__init__(self.detail)
 
     def __str__(self):
+        """Return message."""
         if self.model_name:
             return f'ModelException - {self.model_name}: {self.detail}'
         else:

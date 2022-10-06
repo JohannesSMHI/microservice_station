@@ -12,14 +12,23 @@ from functools import lru_cache, wraps
 
 
 def get_list_path():
+    """Return the path to the station list.
+
+    Set environment variable to the versioned controlled station list file.
+    """
     return os.getenv(
         'SHARK_STATION_LIST',
         'handler/resources/station.txt'
     )
 
 
-def timed_lru_cache(_func=None, *, seconds: int = 600,
-                    maxsize: int = 128, typed: bool = False):
+def timed_lru_cache(
+        _func=None, *,
+        seconds: int = 600,
+        maxsize: int = 128,
+        typed: bool = False
+):
+    """Timed lru cache."""
     def wrapper_cache(f):
         f = lru_cache(maxsize=maxsize, typed=typed)(f)
         f.delta = seconds * 10 ** 9

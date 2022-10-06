@@ -33,7 +33,7 @@ class Station:
     @property
     @timed_lru_cache(seconds=3600)
     def df(self):
-        """Cached dataframe with "time to live" set to 1 hour."""
+        """Return cached dataframe with "time to live" set to 1 hour."""
         return pd.read_csv(
             LIST_PATH,
             sep='\t',

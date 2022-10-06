@@ -30,7 +30,7 @@ app.include_router(api_router)
 
 
 @app.exception_handler(ModelDoesNotExists)
-async def validation_exception_handler(request, exc):
+async def model_exception_handler(request, exc):
     """Override exceptions."""
     return PlainTextResponse(str(exc), status_code=404)
 
