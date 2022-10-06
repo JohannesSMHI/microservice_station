@@ -28,7 +28,7 @@ def timed_lru_cache(
         maxsize: int = 128,
         typed: bool = False
 ):
-    """Timed lru cache."""
+    """Cache function or method."""
     def wrapper_cache(f):
         f = lru_cache(maxsize=maxsize, typed=typed)(f)
         f.delta = seconds * 10 ** 9
