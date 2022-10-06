@@ -15,6 +15,12 @@ Developed by Shd at SMHI.
 💻 Installation - Getting started
 ----------------------------------
 
+**In production:**
+Make sure to add environment variable "SHARK_STATION_LIST" with the path to the
+versioned controlled station list file.
+
+--------------------------------------------------------------------------------
+
 **Create a virtual environment for your project with venv:**
 
 .. code-block:: bash
