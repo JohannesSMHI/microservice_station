@@ -17,11 +17,9 @@ from src.models import ModelDoesNotExists
 
 app = FastAPI()
 
-origins = ['http://localhost:8010']
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    # allow_origins=['http://localhost:8010'],
     allow_methods=['GET'],
     allow_headers=['*'],
 )
