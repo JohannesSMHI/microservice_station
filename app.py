@@ -6,7 +6,10 @@ Created on 2022-03-11 08:47
 
 @author: johannes
 """
-import uvicorn
+try:
+    import uvicorn
+except ImportError:
+    pass
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
@@ -43,7 +46,7 @@ if __name__ == '__main__':
     uvicorn.run(
         'app:app',
         host='127.0.0.1',
-        port=8010,
+        port=5000,
         log_level='info',
         reload=True
     )
