@@ -6,77 +6,44 @@ Created on 2022-03-11 08:47
 
 @author: johannes
 """
-import flask
-from flask_caching import Cache
-import connexion
-from handler import Station, get_list_file
-
-"""
-Microservice Template:
-    - https://github.com/shark-microservices/microservice_station
-
-This service is intended for SMHI-NODC use.
-    - It handles the station list file (station.txt) and versioning (SVN)
-    - Examples: See ./example/
-"""
+import uvicorn
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import PlainTextResponse
+from routes.api import router as api_router
+from src.models import ModelDoesNotExists
 
 
-def get_file(*args, **kwargs):
-    """Get station file."""
-    content = get_list_file()
-    response = flask.Response(content)
-    response.headers['Content-Type'] = 'text/csv'
-    return response
+app = FastAPI()
 
-
-def get_data(*args, attribute=None, attribute_list=None, all_attributes=False,
-             local_id=None, station_localid=None, **kwargs):
-    """Get data from master station list.
-
-    Args:
-        attribute (str): Attribute
-        attribute_list (str): List of attributes
-        all_attributes (bool): The complete list? (True | False)
-        local_id (str): ID of the local (Provplats)
-        station_localid (str): ID of the station (Övervakningsstation)
-    """
-    if attribute:
-        return station_handler.get_attribute_list(attribute=attribute)
-    elif attribute_list:
-        return station_handler.get_dictionary(attribute_list=attribute_list)
-    elif all_attributes:
-        return station_handler.get_dictionary(all_attributes=all_attributes)
-    elif local_id:
-        return station_handler.get_data_for_id(local_id=local_id)
-    elif station_localid:
-        return station_handler.get_data_for_id(station_localid=station_localid)
-    else:
-        return 'No parameters given', 404
-
-
-app = connexion.FlaskApp(
-    __name__,
-    specification_dir='./',
-    options={'swagger_url': '/'},
+app.add_middleware(
+    CORSMiddleware,
+    # allow_origins=['http://localhost:8010'],
+    allow_methods=['GET'],
+    allow_headers=['*'],
 )
-app.add_api('openapi.yaml')
-cache = Cache(config={
-    "DEBUG": True,
-    "CACHE_TYPE": "SimpleCache",
-    "CACHE_DEFAULT_TIMEOUT": 100 * 24 * 60 * 60  # days*hours*minutes*seconds
-})
-cache.init_app(app.app)
+
+app.include_router(api_router)
 
 
-@cache.cached(timeout=100 * 24 * 60 * 60, key_prefix='all_comments')
-def get_station_object():
-    """Return a station object."""
-    # TODO Needs to be cleared once the station list is updated.
-    return Station()
+@app.exception_handler(ModelDoesNotExists)
+async def model_exception_handler(request, exc):
+    """Override exceptions."""
+    return PlainTextResponse(str(exc), status_code=404)
 
 
-station_handler = get_station_object()
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc):
+    """Override exceptions."""
+    return PlainTextResponse(str(exc), status_code=400)
 
 
-if __name__ == "__main__":
-    app.run(port=5000)
+if __name__ == '__main__':
+    uvicorn.run(
+        'app:app',
+        host='127.0.0.1',
+        port=8010,
+        log_level='info',
+        reload=True
+    )

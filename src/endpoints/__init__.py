@@ -2,12 +2,7 @@
 # Copyright (c) 2022 SMHI, Swedish Meteorological and Hydrological Institute.
 # License: MIT License (see LICENSE.txt or http://opensource.org/licenses/mit).
 """
-Created on 2022-03-11 11:12
+Created on 2022-09-23 10:28
 
 @author: johannes
 """
-from .station_handler import (  # noqa: F401
-    Station,
-    get_list_file,
-    get_list_file_path
-)

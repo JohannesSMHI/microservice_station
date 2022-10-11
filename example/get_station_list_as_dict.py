@@ -10,9 +10,11 @@ import requests
 
 
 if __name__ == '__main__':
-    url = "http://10.64.10.247:5000/getdata"
+    url = "http://127.0.0.1:8010/attribute-all"
     response = requests.request(
-        "GET", url, params={'all_attributes': True}
+        "POST", url,
+        headers={'Content-type': 'application/json'},
+        json={"all_attributes": True},
     )
     data = response.json()
     print('columns', data.keys())

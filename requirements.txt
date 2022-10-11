@@ -1,5 +1,7 @@
-connexion[swagger-ui]
-Flask
-flask-caching
 pandas
 requests
+pydantic
+uvicorn
+fastapi
+starlette
+setuptools
