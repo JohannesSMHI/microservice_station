@@ -7,6 +7,7 @@ Created on 2022-10-06 17:21
 @author: johannes
 """
 import os
+from pathlib import Path
 from time import monotonic_ns
 from functools import lru_cache, wraps
 
@@ -18,7 +19,7 @@ def get_list_path():
     """
     return os.getenv(
         'SHARK_STATION_LIST',
-        'handler/resources/station.txt'
+        str(Path(__file__).parent.joinpath('handler/resources/station.txt'))
     )
 
 
