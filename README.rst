@@ -50,4 +50,4 @@ Activate environment:
 
 .. code-block:: bash
 
-    conda activate py38
+    conda activate py39
