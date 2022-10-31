@@ -6,13 +6,5 @@ Created on 2022-09-23 10:28
 
 @author: johannes
 """
-from .station import (  # noqa: F401
-    AttributeModel,
-    AttributeListModel,
-    AttributeAllModel,
-    LocalIdModel,
-    StationIdModel
-)
-from .exceptions import (  # noqa: F401
-    ModelDoesNotExists
-)
+from .station import StationModel  # noqa: F401
+from .exceptions import ModelDoesNotExists  # noqa: F401

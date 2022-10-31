@@ -28,7 +28,7 @@ class Station:
 
     def __init__(self):
         """Initialize."""
-        self.valid_attributes = set(self.df.columns)
+        self.valid_columns = set(self.df.columns)
 
     @property
     @timed_lru_cache(seconds=3600)
@@ -46,30 +46,30 @@ class Station:
     def get_list(self, attribute):
         return self.df[attribute].to_list()
 
-    def get_attribute_list(self, attribute=None):
+    def get_column_list(self, column=None):
         """Return list.
 
-        Get all values from a specific attribute (eg. STATION_NAME).
+        Get all values from a specific column (eg. STATION_NAME).
         """
-        if attribute in self.valid_attributes:
-            return {attribute: self.get_list(attribute)}
+        if column in self.valid_columns:
+            return {column: self.get_list(column)}
         else:
             return None
 
-    def get_dictionary(self, all_attributes=False, attribute_list=None):
+    def get_dictionary(self, all_columns=False, columns=None):
         """Return list.
 
-        Get all values for a list of attributes.
+        Get all values for a list of columns.
 
         Args:
-            all_attributes (bool): The complete list? (True | False)
-            attribute_list (str): String list of attributes.
-                                  Example: 'REG_ID,STATION_NAME,COMNT'
+            all_columns (bool): The complete list? (True | False)
+            columns (str): String list of columns.
+                           Example: 'REG_ID,STATION_NAME,COMNT'
         """
-        if all_attributes:
+        if all_columns:
             return self.df.to_dict(orient='list')
-        elif attribute_list:
-            columns = list(map(str.strip, attribute_list.split(',')))
+        elif columns:
+            columns = list(map(str.strip, columns.split(',')))
             return self.df[columns].to_dict(orient='list')
         else:
             return None
